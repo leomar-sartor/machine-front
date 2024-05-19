@@ -1,6 +1,5 @@
-import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
+import { Card, Typography } from "@mui/material";
 import { PageMain } from "../../shared/components/page-main/PageMain";
-import React from "react";
 
 export const DashboardIndex = () => {
 

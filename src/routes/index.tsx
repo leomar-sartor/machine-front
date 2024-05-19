@@ -1,4 +1,3 @@
-
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import { useDrawerContext } from "../shared/contexts";
@@ -13,18 +12,16 @@ export const AppRoutes = () => {
   useEffect(() => {
     setDrawerOption([
       {
-        icon: "home",
+        icon: "dashboard",
         path: "/home",
-        label: "Página Inicial",
+        label: "Painel",
       },
       {
-        icon: "people",
+        icon: "agriculture",
         path: "/machines",
         label: "Máquinas",
       },
     ]);
-
-    console.log("Carregou Rotas");
   }, []);
 
   return (

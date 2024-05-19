@@ -7,12 +7,51 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useDrawerContext } from "../../contexts";
+import { useAppThemeContext, useDrawerContext } from "../../contexts";
 import { useEffect } from "react";
+
+import ContrastIcon from '@mui/icons-material/Contrast';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AgricultureIcon from '@mui/icons-material/Agriculture';
+import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
+// import { Icon } from "@mui/material";
+import Icon from '@mui/material/Icon';
+
+<Icon>star</Icon>;
+
+interface IListItemLinkProps {
+  to: string;
+  label: string;
+  icon: string;
+  onClick: (() => void) | undefined;
+}
+
+const ListItemLink: React.FC<IListItemLinkProps> = ({ to, icon, label, onClick }) => {
+
+  const navigate = useNavigate();
+
+  const resolvePath = useResolvedPath(to);
+  const match = useMatch({ path: resolvePath.pathname, end: false });
+
+  const handleClick = () => {
+    navigate(to);
+    onClick?.();
+  };
+
+  return (
+    <ListItemButton selected={!!match} onClick={handleClick}>
+      <ListItemIcon>
+        <Icon>{icon}</Icon>
+      </ListItemIcon>
+      <ListItemText primary={label} />
+    </ListItemButton>
+  );
+};
+
+
 interface IMenuLateralProps {
   children?: React.ReactNode;
 }
@@ -21,19 +60,19 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
   const { drawerWidth, isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
 
   useEffect(() => {
-    console.log("drawerOptions", drawerOptions);
   }, []);
 
   const theme = useTheme();
 
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const { toggleTheme } = useAppThemeContext();
+
   return (
     <Drawer
       open={isDrawerOpen}
       onClose={toggleDrawerOpen}
       sx={{
-        //width: drawerWidth,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: drawerWidth,
@@ -53,28 +92,36 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
       <List>
         {drawerOptions.map((drawerOptions, index) => (
           <ListItem key={drawerOptions.label} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={drawerOptions.label} />
-            </ListItemButton>
+            <ListItemLink
+              to={drawerOptions.path}
+              key={drawerOptions.path}
+              icon={drawerOptions.icon}
+              label={drawerOptions.label}
+              onClick={smDown ? toggleDrawerOpen : undefined}
+            />
           </ListItem>
         ))}
       </List>
-      {/* <Divider />
-      <List>
-        {["Emails", "Lixeira", "Outros"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List> */}
+
+      <Divider />
+
+      <List component="nav">
+
+        <ListItemButton onClick={toggleTheme}>
+          <ListItemIcon>
+            <ContrastIcon />
+          </ListItemIcon>
+          <ListItemText primary="Alterar Tema" />
+        </ListItemButton>
+
+        <ListItemButton>
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>
+          <ListItemText primary="Sair" />
+        </ListItemButton>
+
+      </List>
     </Drawer>
   );
 };
