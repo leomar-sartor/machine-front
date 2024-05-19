@@ -12,14 +12,17 @@ import MailIcon from "@mui/icons-material/Mail";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useDrawerContext } from "../../contexts";
-
-interface IMenuLateralPropos {
+import { useEffect } from "react";
+interface IMenuLateralProps {
   children?: React.ReactNode;
 }
+export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
 
-export const MenuLateral: React.FC<IMenuLateralPropos> = ({ children }) => {
+  const { drawerWidth, isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
 
-  const { drawerWidth, isDrawerOpen} = useDrawerContext();
+  useEffect(() => {
+    console.log("drawerOptions", drawerOptions);
+  }, []);
 
   const theme = useTheme();
 
@@ -27,8 +30,10 @@ export const MenuLateral: React.FC<IMenuLateralPropos> = ({ children }) => {
 
   return (
     <Drawer
+      open={isDrawerOpen}
+      onClose={toggleDrawerOpen}
       sx={{
-        width: drawerWidth,
+        //width: drawerWidth,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: drawerWidth,
@@ -44,23 +49,22 @@ export const MenuLateral: React.FC<IMenuLateralPropos> = ({ children }) => {
       }}
       variant={smDown ? "temporary" : "persistent"}
       anchor="left"
-      open={isDrawerOpen}
     >
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding>
+        {drawerOptions.map((drawerOptions, index) => (
+          <ListItem key={drawerOptions.label} disablePadding>
             <ListItemButton>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={drawerOptions.label} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-      <Divider />
+      {/* <Divider />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
+        {["Emails", "Lixeira", "Outros"].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -70,7 +74,7 @@ export const MenuLateral: React.FC<IMenuLateralPropos> = ({ children }) => {
             </ListItemButton>
           </ListItem>
         ))}
-      </List>
+      </List> */}
     </Drawer>
   );
 };

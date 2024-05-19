@@ -1,62 +1,17 @@
-import { Typography } from "@mui/material";
-import { styled, useTheme } from "@mui/material/styles";
-import { Card } from "@mui/material";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import * as React from "react";
-import { useDrawerContext } from "../../contexts";
+import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
+import { PageMain } from "../../shared/components/page-main/PageMain";
+import React from "react";
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
-  open?: boolean;
-  screenmd?: boolean;
-  drawerwidth?: number;
-}>(({ theme, open, screenmd, drawerwidth }) => ({
-  flexGrow: 1,
-  padding: theme.spacing(3),
-  transition: theme.transitions.create("margin", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen
-  }),
-  ...(!screenmd && {
-    //marginLeft: `-${drawerwidth}px`,
-    marginTop: "64px"
-  }),
-  ...(screenmd && {
-    marginTop: "48px"
-  }),
-  ...(open && {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen
-    }),
-    marginLeft: `${drawerwidth}px`
-  })
-}));
-
-
-interface IPageMainProps {
-  children?: React.ReactNode;
-}
-
-export const PageMain: React.FC<IPageMainProps> = ({ children }) => {
-
-  const { drawerWidth, isDrawerOpen } = useDrawerContext();
-
-  const theme = useTheme();
-
-  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+export const DashboardIndex = () => {
 
   return (
-    <Main open={isDrawerOpen} screenmd={smDown ? smDown : undefined} drawerwidth={drawerWidth ? drawerWidth : undefined }>
-      {
-        children
-      }
-      {/* <Card>
+    <PageMain>
+      <Card>
         <Typography paragraph>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
           dolor purus non enim praesent elementum facilisis leo vel. Risus at</Typography>
       </Card>
-      <Typography paragraph>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+      <Typography paragraph>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
         eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
         dolor purus non enim praesent elementum facilisis leo vel. Risus at
         ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
@@ -68,9 +23,8 @@ export const PageMain: React.FC<IPageMainProps> = ({ children }) => {
         quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
         vivamus at augue. At augue eget arcu dictum varius duis at consectetur
         lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-        faucibus et molestie ac.
-      </Typography>
-      <Typography paragraph>
+        faucibus et molestie ac.</Typography>
+        <Typography paragraph>
         Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
         ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
         elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
@@ -83,7 +37,7 @@ export const PageMain: React.FC<IPageMainProps> = ({ children }) => {
         sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
         eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
         posuere sollicitudin aliquam ultrices sagittis orci a.
-      </Typography> */}
-    </Main>
+      </Typography>
+    </PageMain>
   );
-}
+};
